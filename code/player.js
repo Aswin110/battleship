@@ -58,7 +58,14 @@ const player = (player) => {
 		}
 	};
 
-	return {playerInfo, randomPlay, AI};
+	const attack = (enemyBoard, coordinate, enemyArray) => {
+		if (playerInfo.shots.includes(coordinate)) {
+			return 'this area has been already attacked';
+		}
+		enemyBoard.receiveAttack(coordinate ,enemyArray);
+	};
+
+	return {playerInfo, randomPlay, AI, attack};
 };
 
 export default player;
