@@ -62,6 +62,7 @@ const player = (player) => {
 		if (playerInfo.shots.includes(coordinate)) {
 			return 'this area has been already attacked';
 		}
+		playerInfo.shots.push(coordinate);
 		enemyBoard.receiveAttack(coordinate ,enemyArray);
 	};
 

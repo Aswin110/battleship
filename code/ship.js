@@ -1,7 +1,13 @@
 const ship = (id, shipName, length, isVertical = false) => {
 	let hitSize = Array(length).fill(null);
-	const hit = (coordinate) => {
-		hitSize[coordinate] = 'x';
+	const hit = ()=> {
+		const index = hitSize.indexOf(null); 
+		if (index !== -1) {
+			hitSize[index] = 'x'; 
+			console.log(hitSize); 
+		} else {
+			console.log('All slots are filled.'); 
+		}
 	};
 
 	const isSunk = () => {
