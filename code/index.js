@@ -1,6 +1,6 @@
-import ship from './ship.js';
-import gameBoard from './gameBoard.js';
-import player from './player.js';
+// import ship from './ship.js';
+// import gameBoard from './gameBoard.js';
+// import player from './player.js';
 import gamePlay from './DOM.js';
 
 // let carrier = ship(1, 'carrier', 5, true);
@@ -45,3 +45,4 @@ import gamePlay from './DOM.js';
 // }
 
 const jade = gamePlay();
+jade;

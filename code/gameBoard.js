@@ -3,10 +3,10 @@ const gameBoard = (player) => {
 	const boardInfo = {
 		board: [],
 		player: player,
-		shipsLeft: true,
+		shipsLeft: false,
 		lastShot : {
 			hit:false,
-			coordinate:false
+			coordinate:null
 		}
 	};
 
@@ -37,7 +37,7 @@ const gameBoard = (player) => {
 
 	const receiveAttack = (coordinate, myArray) => {
 		if (boardInfo.board[coordinate].ship) {
-
+			
 			let targetedShip = myArray.find(ship => ship.id === boardInfo.board[coordinate].ship);
 			targetedShip.hit(coordinate);
 
@@ -52,7 +52,6 @@ const gameBoard = (player) => {
 			}
 		} else {
 			boardInfo.board[coordinate].beenHit = true;
-
 			boardInfo.lastShot.hit = false;
 			boardInfo.lastShot.coordinate = coordinate;
 			return 'That is ocean; try another area.';
@@ -60,14 +59,13 @@ const gameBoard = (player) => {
 	};
     
 	const allShipSunk = () => {
-		boardInfo.board.forEach(element => {
-			if(element.ship !== false && element.beenHit === true) {
-				boardInfo.shipsLeft = true;
-				return false;
-			} 
-		});
-		boardInfo.shipsLeft = true;
-		return false;
+		for (const element of boardInfo.board) {
+			if (element.ship && !element.beenHit) {
+				return false; 
+			}
+		}
+		boardInfo.shipsLeft = true; 
+		return true;
 	};
 
 	return {boardInfo, placeShip, receiveAttack, allShipSunk };

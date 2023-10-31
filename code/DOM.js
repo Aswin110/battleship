@@ -34,18 +34,16 @@ const gamePlay = () => {
 	const human = player('human');
 	const computer = player('computer');
 
-	// console.log(playerBoard.boardInfo.board);
-	// console.log(computerBoard.boardInfo.board);
 	const grid = document.querySelector('.grid');
 
 	const buildGrid = (boardData, player) => {
+		const boxGrid = document.createElement('div');
 		const gridContainer = document.createElement('div');
 		gridContainer.classList.add('grid-container');
-
 		const thePlayer = document.createElement('div');
 		thePlayer.classList.add('player');
 		thePlayer.textContent = player;
-		grid.appendChild(thePlayer);
+		boxGrid.appendChild(thePlayer);
 
 		for (let i = 0; i < 10; i++) {
 			for (let j = 0; j < 10; j++) {
@@ -59,10 +57,27 @@ const gamePlay = () => {
 					cell.addEventListener('click', function () {
                         
 						if(!cell.textContent) {
-							console.log(cellIndex,cell.value);
+							console.log(cellIndex, cell.value);
 							cell.textContent = 'x';
-                            
+							if (!computerBoard.boardInfo.board[cellIndex].beenHit){
+								computerBoard.boardInfo.board[cellIndex].beenHit = true;
+								human.playerInfo.shots.push(cellIndex);
+								computerBoard.receiveAttack(cellIndex, computerArray);
+								checkWon(computerBoard, human);
+								if (computerBoard.boardInfo.board[cellIndex].ship === false) {
+									
+									console.log('no ship');
+                                
+								} else {
+									cell.classList.add('ship');
+									console.log( 'ship');
+								}
+							}
+						} else {
+							console.log('try another area',cell.value);
 						}
+						console.log('hit',computerBoard.boardInfo.lastShot.hit,'coordinate', computerBoard.boardInfo.lastShot.coordinate);
+
 					});
 				}
 
@@ -73,14 +88,22 @@ const gamePlay = () => {
 				gridContainer.appendChild(cell);
 			}
 		}
-    
-		grid.appendChild(gridContainer); 
+		boxGrid.appendChild(gridContainer);
+		grid.appendChild(boxGrid); 
 	};
     
 	buildGrid(playerBoard.boardInfo.board, 'Human'); 
 	buildGrid(computerBoard.boardInfo.board, 'Computer');
 	console.log('player board',playerBoard.boardInfo.board);
 
+	const checkWon = (theBoard, isPlayer) => {
+		console.log('allShipSunk',theBoard.allShipSunk());
+		if(theBoard.allShipSunk()) {
+			isPlayer.isWon = true;
+			console.log(`${isPlayer.name} has won`);
+			return `${isPlayer.name} has won`;
+		}
+	};
 };
 
 export default gamePlay;
