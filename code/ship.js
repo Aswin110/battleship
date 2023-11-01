@@ -4,7 +4,6 @@ const ship = (id, shipName, length, isVertical = false) => {
 		const index = hitSize.indexOf(null); 
 		if (index !== -1) {
 			hitSize[index] = 'x'; 
-			console.log(shipName,hitSize ,'isSunk',isSunk()); 
 		} else {
 			console.log(shipName,'All slots are filled.'); 
 		}

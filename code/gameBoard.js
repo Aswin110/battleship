@@ -34,8 +34,18 @@ const gameBoard = (player) => {
 		}
 	};
 
+	const updateGridCell = (coordinate) => {
+		const cell = document.getElementById(`Human-cell${coordinate}`);
+		if (cell) {
+			cell.textContent = 'x'; 
+		}
+	};
 
 	const receiveAttack = (coordinate, myArray) => {
+		if(boardInfo.player === 'human') {
+			updateGridCell(coordinate); 
+		}
+		
 		if (boardInfo.board[coordinate].ship) {
 			
 			let targetedShip = myArray.find(ship => ship.id === boardInfo.board[coordinate].ship);

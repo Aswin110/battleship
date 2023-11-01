@@ -44,42 +44,42 @@ const gamePlay = () => {
 		thePlayer.classList.add('player');
 		thePlayer.textContent = player;
 		boxGrid.appendChild(thePlayer);
-
 		for (let i = 0; i < 10; i++) {
 			for (let j = 0; j < 10; j++) {
 				const cellIndex = i * 10 + j;
 				const cell = document.createElement('div');
 				cell.classList.add('grid-item');
+				cell.id = `${player}-cell${cellIndex}`;
 				cell.value = boardData[cellIndex]; 
 				cell.textContent = '';
-
 				if(boardData === computerBoard.boardInfo.board) {
-					cell.addEventListener('click', function () {
-                        
+					cell.addEventListener('click', function () {                   
 						if(!cell.textContent) {
-							console.log(cellIndex, cell.value);
 							cell.textContent = 'x';
 							if (!computerBoard.boardInfo.board[cellIndex].beenHit){
 								computerBoard.boardInfo.board[cellIndex].beenHit = true;
 								human.playerInfo.shots.push(cellIndex);
 								computerBoard.receiveAttack(cellIndex, computerArray);
 								checkWon(computerBoard, human);
-								if (computerBoard.boardInfo.board[cellIndex].ship === false) {
-									
-									console.log('no ship');
-                                
-								} else {
-									cell.classList.add('ship');
-									console.log( 'ship');
-								}
+								computerMove();
 							}
 						} else {
 							console.log('try another area',cell.value);
 						}
-						console.log('hit',computerBoard.boardInfo.lastShot.hit,'coordinate', computerBoard.boardInfo.lastShot.coordinate);
-
 					});
 				}
+				const computerMove = () =>{				 
+					let coord = computer.AI(playerBoard.boardInfo.lastShot);
+					console.log('computer Hit',coord);
+					playerBoard.receiveAttack(coord,humanArray);
+					playerBoard.boardInfo.board.beenHt = true;
+					
+					checkWon(playerBoard, computer);
+					if (computerBoard.boardInfo.board[cellIndex].ship !== false){
+						cell.classList.add('ship');
+					}	
+					console.log('shots',computer.playerInfo.shots);
+				};
 
 				if (boardData === playerBoard.boardInfo.board && cell.value.ship !==false) {
 					cell.classList.add('ship');
@@ -90,20 +90,22 @@ const gamePlay = () => {
 		}
 		boxGrid.appendChild(gridContainer);
 		grid.appendChild(boxGrid); 
+		
 	};
     
 	buildGrid(playerBoard.boardInfo.board, 'Human'); 
 	buildGrid(computerBoard.boardInfo.board, 'Computer');
-	console.log('player board',playerBoard.boardInfo.board);
+
+
 
 	const checkWon = (theBoard, isPlayer) => {
-		console.log('allShipSunk',theBoard.allShipSunk());
 		if(theBoard.allShipSunk()) {
-			isPlayer.isWon = true;
-			console.log(`${isPlayer.name} has won`);
-			return `${isPlayer.name} has won`;
+			isPlayer.playerInfo.isWon = true;
+			let result = `${isPlayer.playerInfo.name} has won`;
+			alert(result);
 		}
 	};
+	return {buildGrid };
 };
 
 export default gamePlay;
